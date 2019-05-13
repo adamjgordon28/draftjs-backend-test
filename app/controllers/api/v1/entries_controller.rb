@@ -1,35 +1,38 @@
 class Api::V1::EntriesController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
     def index
-      @entries= Entry.all
-      render json: @entries
+      @entry= Entry.all
+      render json: @entry
     end
 
     def show
-      @entries = Entry.find(entry_params[:id])
-      render json: @entries
+      @entry = Entry.find(params[:id])
+      render json: @entry
     end
 
     def create
-      @entries = Entry.find_or_create_by(entry_params)
-      render json: @entries
+
+      entry = Entry.find_or_create_by(content: params[:content].to_s)
+      render json: entry
     end
 
     def update
-      @entries = Entry.find(entry_params[:id])
-      @entries.update(entry_params)
-      @entries.save
-      render json: @entries
+      @entry = Entry.find(entry_params[:id])
+      @entry.update(entry_params)
+      @entry.save
+      render json: @entry
     end
 
     def destroy
-      @entries = Entry.find(entry_params[:id])
-      @entries.destroy
+      @entry = Entry.find(entry_params[:id])
+      @entry.destroy
     end
 
-    private
-
-    def entry_params
-      params.permit(:id, :content)
-    end
+    # private
+    #
+    # def entry_params
+    #   params.require(:entry).permit(:content)
+    # end
 
   end
