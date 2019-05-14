@@ -18,8 +18,8 @@ class Api::V1::EntriesController < ApplicationController
     end
 
     def update
-      @entry = Entry.find(entry_params[:id])
-      @entry.update(entry_params)
+      @entry = Entry.find(params[:id])
+      @entry.update(content: params[:content].to_s)
       @entry.save
       render json: @entry
     end
